@@ -105,6 +105,7 @@
     .logo-container {
         grid-area: proffy;
         text-align: initial;
+        align-self: center;
     }
 
     .logo-container img {
@@ -114,10 +115,14 @@
     .hero-image {
         grid-area: image;
     }
+
     .buttons-container {
         grid-area: button;
+        justify-content: flex-start;
     }
+
     .total-connetions {
         grid-area: texting;
+        justify-self: end;
     }
 }
