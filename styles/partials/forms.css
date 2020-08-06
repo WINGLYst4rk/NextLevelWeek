@@ -1,12 +1,14 @@
 
 .select-block label,
-.input-block label {
+.input-block label,
+.text-area-block label{
     font-size: 1.4rem;
     color: var(--color-text-complement);
 }
 
 .input-block input,
-.select-block select {
+.select-block select,
+.text-area-block textarea {
     width: 100%;
     height: 5.6rem;
     margin-top: 0.8rem;
@@ -18,11 +20,20 @@
     font: 1.6rem Archivo;
 }
 
-.input-block {
+.text-area-block textarea {
+    padding: 1.2rem 1.4rem;
+    height: 16rem;
+
+    resize: vertical;
+}
+
+.input-block,
+.text-area-block {
     position: relative;
 }
 
-.input-block:focus-within::after { /* criação de um elemento temporario CSS */
+.input-block:focus-within::after,
+.text-area-block:focus-within::after { /* criação de um elemento temporario CSS */
     content:"";
 
     width: calc(100% - 3.2rem);
