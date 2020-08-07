@@ -42,11 +42,9 @@
     border: 0;
 
     color: var(--color-pimary);
-
     font: 700 1.6rem Archivo;
 
     cursor: pointer;
-
     transition: 0.2s;
 }
 
