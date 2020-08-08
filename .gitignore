@@ -1,0 +1,9 @@
+#don`t track these folders
+node_modules/
+
+
+#don't track these files
+.editorconfg
+LICENSE
+package.json
+package-lock.json
