@@ -7,10 +7,10 @@ module.exports = async function(db, {proffyValue, classValue, classScheduleValue
             whatsapp,
             bio
         ) VALUES (
-            ${proffyValue.name},
-            ${proffyValue.avatar},
-            ${proffyValue.whatsapp},
-            ${proffyvalue.bio}
+            "${proffyValue.name}",
+            "${proffyValue.avatar}",
+            "${proffyValue.whatsapp}",
+            "${proffyValue.bio}"
         );
     `)
 
@@ -22,17 +22,32 @@ module.exports = async function(db, {proffyValue, classValue, classScheduleValue
                 subject,
                 cost,
                 proffy_id
-            ) VALUE(
-                ${classValue.subject},
-                ${classValue.cost},
-                ${proffy_id}
+            ) VALUES(
+                "${classValue.subject}",
+                "${classValue.cost}",
+                "${proffy_id}"
             );
     `)
 
     const class_id = insertedClass.lastID
 
     //inserir dados na tabela classScheduleValues
-    const insertedAllClassScheduleValues = classScheduleValues.map((value) => {
-        return 
+    const insertedAllClassScheduleValues = classScheduleValues.map((classScheduleValue) => {
+        return db.run(`
+            INSERT INTO class_schedule (
+                class_id,
+                weekday,
+                time_from,
+                time_to
+            ) VALUES(
+                "${class_id}",
+                "${classScheduleValue.weekday}",
+                "${classScheduleValue.time_from}",
+                "${classScheduleValue.time_to}"
+            );
+        `)
     })
+
+    //execução de todas as inserções
+    await Promise.all(insertedAllClassScheduleValues)
 }
