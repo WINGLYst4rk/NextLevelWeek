@@ -12,7 +12,7 @@ DataBase.then(async (db) => {
     }
 
     classValue = {
-        subject: "Química", 
+        subject: 1, 
         cost: "20",
         //proffy_id virá pelo banco de dados
     }
@@ -31,8 +31,31 @@ DataBase.then(async (db) => {
         }
     ]
 
-    await createProffy(db, {proffyValue, classValue, classScheduleValues})
+    // await createProffy(db, {proffyValue, classValue, classScheduleValues})
 
     //consulta de dados
+    //consultar todos os proffys
 
+    const selectedProffys = await db.all("SELECT * FROM proffys")
+    // console.log(selectedProffys)
+
+    //consultar todas as classes e proffys
+
+    const selectedClassesAndProffys = await db.all(`
+        SELECT classes.*, proffys.*
+        FROM proffys
+        JOIN classes ON (classes.proffy_id = proffys.id)
+        WHERE classes.proffy_id = 1;
+    `)
+    // console.log(selectedClassesAndProffys)
+
+    const selectedClassesSchedules = await db.all(`
+        SELECT class_schedule.*
+        FROM class_schedule
+        WHERE class_schedule.class_id = "1"
+        AND class_schedule.weekday = "0"
+        AND class_schedule.time_from <= "1600"
+        AND class_schedule.time_to > "1600"
+    `)
+    console.log(selectedClassesSchedules)
 })
