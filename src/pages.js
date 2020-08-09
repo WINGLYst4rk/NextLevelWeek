@@ -1,12 +1,43 @@
-const { subjects, weekdays, getSubject, getWeekday } = require('./utils/format')
+const { subjects, weekdays, getSubject, getWeekday, convertHoursToMinutes } = require('./utils/format')
+const DataBase = require('./database/db')
 
 function pageLanding(req, res) {
     return res.render("index.html")
 }
 
-function pageStudy(req, res) {
+async function pageStudy(req, res) {
     const filters = req.query
-    return res.render("study.html", {proffys, filters, subjects, weekdays})
+
+    if(!filters.subject || !filters.weekday || !filters.time) {
+        return res.render("study.html", { filters, subjects, weekdays })
+    }
+    //logíca para converter horas em minutos
+    const timeToMinutes = convertHoursToMinutes(filters.time)
+
+    const query = `
+        SELECT classes.*, proffys.*
+        FROM proffys
+        JOIN classes ON (classes.proffy_id = proffys.id)
+        WHERE EXISTS (
+            SELECT class_schedule.*
+            FROM class_schedule
+            WHERE class_schedule.class_id = classes.id
+            AND class_schedule.weekday = ${filters.weekday}
+            AND class_schedule.time_from <= ${timeToMinutes}
+            AND class_schedule.time_to > ${timeToMinutes}
+        )
+        AND classes.subject = '${filters.subject}'
+    `
+    try {
+        const db = await DataBase
+        const proffys = await db.all(query)
+
+        return res.render('study.html', { proffys, subjects, filters, weekdays })
+    } catch (error) {
+        console.log(error)
+    }
+
+    // return res.render("study.html", {proffys, filters, subjects, weekdays})
     
 }
 
