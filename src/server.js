@@ -1,23 +1,25 @@
 const proffys = [
-    {name: "Diego Fernandes", 
-    avatar: "https://avatars2.githubusercontent.com/u/2254731?s=460&amp;u=0ba16a79456c2f250e7579cb388fa18c5c2d7d65&amp;v=4", 
-    whatsapp: "985234567", 
-    bio: "Entusiasta das melhores tecnologias de química avançada.<br/><br/>Apaixonado por explodir coisas em laboratório e por mudar a vida das pessoas através de experiências. Mais de 200.000 pessoas já passaram por uma das minhas explosões.", 
-    subject: "Química", 
-    cost: "20",
-     weekday: [0],
-     time_from: [720],
-     time_to: [1220]
+    {
+        name: "Diego Fernandes", 
+        avatar: "https://avatars2.githubusercontent.com/u/2254731?s=460&amp;u=0ba16a79456c2f250e7579cb388fa18c5c2d7d65&amp;v=4", 
+        whatsapp: "985234567", 
+        bio: "Entusiasta das melhores tecnologias de química avançada.<br/><br/>Apaixonado por explodir coisas em laboratório e por mudar a vida das pessoas através de experiências. Mais de 200.000 pessoas já passaram por uma das minhas explosões.", 
+        subject: "Química", 
+        cost: "20",
+        weekday: [0],
+        time_from: [720],
+        time_to: [1220]
     },
-    {name: "Leticia Martins", 
-    avatar: "https://avatars2.githubusercontent.com/u/2254731?s=460&amp;u=0ba16a79456c2f250e7579cb388fa18c5c2d7d65&amp;v=4", 
-    whatsapp: "63984367573", 
-    bio: "Entusiasta das melhores tecnologias de química avançada.<br/><br/>Apaixonado por explodir coisas em laboratório e por mudar a vida das pessoas através de experiências. Mais de 200.000 pessoas já passaram por uma das minhas explosões.", 
-    subject: "Matemática", 
-    cost: "40",
-     weekday: [1],
-     time_from: [1440],
-     time_to: [1220]
+    {
+        name: "Leticia Martins", 
+        avatar: "https://avatars2.githubusercontent.com/u/2254731?s=460&amp;u=0ba16a79456c2f250e7579cb388fa18c5c2d7d65&amp;v=4", 
+        whatsapp: "63984367573", 
+        bio: "Entusiasta das melhores tecnologias de química avançada.<br/><br/>Apaixonado por explodir coisas em laboratório e por mudar a vida das pessoas através de experiências. Mais de 200.000 pessoas já passaram por uma das minhas explosões.", 
+        subject: "Matemática", 
+        cost: "40",
+        weekday: [1],
+        time_from: [1440],
+        time_to: [1220]
     }
 ]
 
@@ -44,6 +46,16 @@ const weekdays = [
     "Sábado",
 ]
 
+function getSubject(subjectNumber) {
+    const position = +subjectNumber - 1
+    return subjects[position]
+}
+
+function getWeekday(weekdayNumber) {
+    const position = +weekdayNumber
+    return weekdays[position]
+}
+
 function pageLanding(req, res) {
     return res.render("index.html")
 }
@@ -56,13 +68,17 @@ function pageStudy(req, res) {
 
 function pageGiveClasses(req, res) {
     const data = req.query
-    const isNotEmpty = object.keys(data).length > 0
+    const isNotEmpty = Object.keys(data).length > 0
 
     if (isNotEmpty){
+        data.subject = getSubject(data.subject)
+        data.weekday = getWeekday(data.weekday)
         proffys.push(data)
         return res.redirect("/study")
+    }else{
+        return res.render("give-classes.html", {subjects, weekdays})
     }
-    return res.render("give-classes.html", {subjects, weekdays})
+    
 }
 
 //importação de dependências
