@@ -17,7 +17,7 @@ DataBase.then((db) => {
         //proffy_id virá pelo banco de dados
     }
 
-    classScheduleValue = [
+    classScheduleValues = [
         //class_id virá pelo banco de dados após cadastro da class
         {
             weekday: 1,
