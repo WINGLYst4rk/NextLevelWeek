@@ -3,7 +3,7 @@
 const express = require('express');//finalmente usei
 const server = express();
 const nunjucks = require('nunjucks');
-const { pageStudy, pageLanding, pageGiveClasses } = require('./pages');
+const { pageStudy, pageLanding, pageGiveClasses, saveClasses } = require('./pages');
 const DataBase = require('./database/db')
 
 
@@ -17,9 +17,12 @@ nunjucks.configure("src/views", {
 
 //configuração de arquivos estáticos
 server.use(express.static("public"))
+//recebimento de dados pelo body
+.use(express.urlencoded({ extended: true }))
 //rotas da aplicação
 .get("/", pageLanding)
 .get("/study", pageStudy)
 .get("/give-classes", pageGiveClasses)
+.post("/save-classes", saveClasses)
 .listen(5500)
 
